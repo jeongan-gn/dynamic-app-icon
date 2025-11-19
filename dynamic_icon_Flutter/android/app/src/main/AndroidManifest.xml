@@ -1,0 +1,121 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="icon_change_test"
+        android:name="${applicationName}"
+        android:icon="@mipmap/mydefaulticon"
+        android:enabled="true">
+        
+        <service
+            android:name="com.solusibejo.flutter_dynamic_icon_plus.FlutterDynamicIconPlusService"
+            android:stopWithTask="false"/>
+            
+        <!-- MainActivity - intent-filter 포함 -->
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"
+            android:enabled="true"
+            android:exported="true">
+            
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+                
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Default Icon - 점(.)으로 시작 -->
+        <activity-alias
+            android:label="icon_change_test"
+            android:icon="@mipmap/mydefaulticon"
+            android:roundIcon="@mipmap/mydefaulticon"
+            android:name=".DEFAULT"
+            android:exported="true"
+            android:enabled="true"
+            android:targetActivity=".MainActivity">
+
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Blue Icon -->
+        <activity-alias
+            android:icon="@mipmap/myblueicon"
+            android:roundIcon="@mipmap/myblueicon"
+            android:name=".icon_blue"
+            android:exported="true"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Yellow Icon -->
+        <activity-alias
+            android:icon="@mipmap/myyellowicon"
+            android:roundIcon="@mipmap/myyellowicon"
+            android:name=".icon_yellow"
+            android:exported="true"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Red Icon -->
+        <activity-alias
+            android:icon="@mipmap/myredicon"
+            android:roundIcon="@mipmap/myredicon"
+            android:name=".icon_red"
+            android:exported="true"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
