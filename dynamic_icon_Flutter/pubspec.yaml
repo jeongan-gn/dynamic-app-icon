@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  flutter_dynamic_icon_plus: ^1.4.0
+  flutter_icon_dynamic: ^0.0.2
 
 dev_dependencies:
   flutter_test:

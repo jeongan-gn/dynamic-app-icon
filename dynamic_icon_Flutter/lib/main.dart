@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
-
+import 'package:flutter_icon_dynamic/flutter_icon_dynamic.dart';
 import 'dart:developer';
 import 'dart:io';
 
@@ -36,33 +35,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   AppIcon? currentIcon;
+  final _flutterIconDynamicPlugin = FlutterIconDynamic();
+  final List<String> appIconList = AppIcon.values.map((e) => e.iconName!).toList();
 
   @override
   void initState() {
     super.initState();
-    _loadCurrentIcon();
-  }
-
-  Future<void> _loadCurrentIcon() async {
-    final iconName = await FlutterDynamicIconPlus.alternateIconName;
-    if (mounted) {
-      setState(() {
-        currentIcon = AppIcon.fromIconName(iconName);
-      });
-    }
   }
 
   void changeAppIcon(AppIcon icon) async {
     try {
-      final past = await FlutterDynamicIconPlus.alternateIconName;
-      if (await FlutterDynamicIconPlus.supportsAlternateIcons) {
-        await FlutterDynamicIconPlus.setAlternateIconName(iconName: icon.iconName);
+      final isSupported = await _flutterIconDynamicPlugin.isSupported;
+      if (isSupported == true) {
+        await _flutterIconDynamicPlugin.setIcon(icon.iconName!, androidIcons: appIconList);
         setState(() {
           currentIcon = icon;
         });
-
-        final changed = await FlutterDynamicIconPlus.alternateIconName;
-        log('Icon change requested from $past to $changed');
       }
     } on PlatformException catch (_) {
       log('Failed to change app icon');
@@ -104,42 +92,18 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 enum AppIcon {
-  defaultIcon(null), // 기본 아이콘은 null
-  blueIcon('icon_blue'),
-  yellowIcon('icon_yellow'),
-  redIcon('icon_red');
+  defaultIcon('DefaultIcon'),
+  blueIcon('BlueIcon'),
+  yellowIcon('YellowIcon'),
+  redIcon('RedIcon');
 
   final String? rawName;
   const AppIcon(this.rawName);
 
   String? get iconName {
-    if (Platform.isIOS) {
-      return rawName;
-    } else {
-      // Android: 점 없이 그대로 반환
-      return rawName;
+    if (Platform.isAndroid) {
+      return 'appicon.$rawName';
     }
-  }
-
-  static AppIcon fromIconName(String? iconName) {
-    if (iconName == null) {
-      return AppIcon.defaultIcon;
-    }
-
-    if (Platform.isIOS) {
-      return AppIcon.values.firstWhere(
-        (icon) => icon.rawName == iconName,
-        orElse: () => AppIcon.defaultIcon,
-      );
-    } else {
-      // Android: 전체 패키지 경로에서 이름 추출
-      final parts = iconName.split('.');
-      final aliasName = parts.last; // "icon_blue" 또는 "DEFAULT"
-
-      return AppIcon.values.firstWhere(
-        (icon) => icon.rawName == aliasName,
-        orElse: () => AppIcon.defaultIcon,
-      );
-    }
+    return rawName;
   }
 }

@@ -9,7 +9,6 @@
             android:name="com.solusibejo.flutter_dynamic_icon_plus.FlutterDynamicIconPlusService"
             android:stopWithTask="false"/>
             
-        <!-- MainActivity - intent-filter 포함 -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -23,23 +22,17 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
-                
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
-        <!-- Default Icon - 점(.)으로 시작 -->
+        <!-- Default Icon -->
         <activity-alias
-            android:label="icon_change_test"
             android:icon="@mipmap/mydefaulticon"
             android:roundIcon="@mipmap/mydefaulticon"
-            android:name=".DEFAULT"
+            android:name="appicon.DefaultIcon"
             android:exported="true"
             android:enabled="true"
             android:targetActivity=".MainActivity">
-
+            
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
@@ -54,7 +47,7 @@
         <activity-alias
             android:icon="@mipmap/myblueicon"
             android:roundIcon="@mipmap/myblueicon"
-            android:name=".icon_blue"
+            android:name="appicon.BlueIcon"
             android:exported="true"
             android:enabled="false"
             android:targetActivity=".MainActivity">
@@ -73,7 +66,7 @@
         <activity-alias
             android:icon="@mipmap/myyellowicon"
             android:roundIcon="@mipmap/myyellowicon"
-            android:name=".icon_yellow"
+            android:name="appicon.YellowIcon"
             android:exported="true"
             android:enabled="false"
             android:targetActivity=".MainActivity">
@@ -92,7 +85,7 @@
         <activity-alias
             android:icon="@mipmap/myredicon"
             android:roundIcon="@mipmap/myredicon"
-            android:name=".icon_red"
+            android:name="appicon.RedIcon"
             android:exported="true"
             android:enabled="false"
             android:targetActivity=".MainActivity">
