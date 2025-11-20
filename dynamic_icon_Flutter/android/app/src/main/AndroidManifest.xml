@@ -4,10 +4,6 @@
         android:name="${applicationName}"
         android:icon="@mipmap/mydefaulticon"
         android:enabled="true">
-        
-        <service
-            android:name="com.solusibejo.flutter_dynamic_icon_plus.FlutterDynamicIconPlusService"
-            android:stopWithTask="false"/>
             
         <activity
             android:name=".MainActivity"
