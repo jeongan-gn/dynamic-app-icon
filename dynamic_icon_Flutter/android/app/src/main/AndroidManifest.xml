@@ -4,6 +4,10 @@
         android:name="${applicationName}"
         android:icon="@mipmap/mydefaulticon"
         android:enabled="true">
+
+        <service
+            android:name="com.solusibejo.flutter_dynamic_icon_plus.FlutterDynamicIconPlusService"
+            android:stopWithTask="false"/>
             
         <activity
             android:name=".MainActivity"
@@ -12,7 +16,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="true">
             
             <meta-data
@@ -23,25 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Default Icon -->
-        <activity-alias
-            android:icon="@mipmap/mydefaulticon"
-            android:roundIcon="@mipmap/mydefaulticon"
-            android:name="appicon.DefaultIcon"
-            android:exported="true"
-            android:enabled="true"
-            android:targetActivity=".MainActivity">
-            
-            <meta-data
-                android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
 
         <!-- Blue Icon -->
         <activity-alias

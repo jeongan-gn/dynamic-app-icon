@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_icon_dynamic/flutter_icon_dynamic.dart';
+import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import 'dart:developer';
 import 'dart:io';
 
@@ -33,24 +33,54 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  AppIcon? currentIcon;
-  final _flutterIconDynamicPlugin = FlutterIconDynamic();
-  final List<String> appIconList = AppIcon.values.map((e) => e.iconName!).toList();
-
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  AppIcon? appliedIcon;
+  AppIcon? selectedIcon;
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _loadCurrentIcon();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _loadCurrentIcon();
+    }
+  }
+
+  Future<void> _loadCurrentIcon() async {
+    final String? activeIconName = await FlutterDynamicIconPlus.alternateIconName;
+
+    setState(() {
+      appliedIcon = AppIcon.values.firstWhere(
+        (icon) => icon.iconName == activeIconName,
+        orElse: () => AppIcon.defaultIcon,
+      );
+    });
   }
 
   void changeAppIcon(AppIcon icon) async {
     try {
-      final isSupported = await _flutterIconDynamicPlugin.isSupported;
-      if (isSupported == true) {
-        await _flutterIconDynamicPlugin.setIcon(icon.iconName!, androidIcons: appIconList);
-        setState(() {
-          currentIcon = icon;
-        });
+      if (await FlutterDynamicIconPlus.supportsAlternateIcons) {
+        await FlutterDynamicIconPlus.setAlternateIconName(
+          iconName: icon.iconName,
+        );
+        setState(() => selectedIcon = icon);
+        if (mounted && Platform.isAndroid) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('앱을 다시 시작하면 새로운 아이콘이 적용됩니다.'),
+            ),
+          );
+        }
       }
     } on PlatformException catch (_) {
       log('Failed to change app icon');
@@ -68,13 +98,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text('current icon: ${appliedIcon?.iconName ?? 'DefaultIcon'}'),
             for (AppIcon appIcon in AppIcon.values) ...[
               TextButton(
                   onPressed: () => changeAppIcon(appIcon),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (currentIcon == appIcon)
+                      if (selectedIcon == appIcon)
                         const Icon(
                           Icons.check,
                           color: Colors.green,
@@ -102,8 +133,8 @@ enum AppIcon {
 
   String? get iconName {
     if (Platform.isAndroid) {
-      return 'appicon.$rawName';
+      return this == defaultIcon ? null : 'appicon.$rawName';
     }
-    return rawName;
+    return this == defaultIcon ? null : rawName;
   }
 }
